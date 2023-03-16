@@ -1,0 +1,14 @@
+GET http://localhost:17713/api/workspace/list
+
+#####
+
+GET http://localhost:17713/api/image/list
+?workspace=illust&start=900&end=1000
+
+#####
+GET http://localhost:17713/api/image/file
+?image_id=01GTS2AC1NCSZPR0MGF27WSRJW&type=thumbnail
+
+####
+GET http://localhost:17713/api/image/similar
+?workspace=illust&start=0&end=100&query_ids=01GV0F2ADDZHGEDPVNCH12YA7A

@@ -1,0 +1,74 @@
+@import './base.css';
+@import './tailwind.css';
+
+@font-face {
+  font-family: 'medium';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('./MPLUS2-Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'regular';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('./MPLUS2-Regular.ttf') format('truetype');
+}
+
+body {
+  font-family: medium, sans-serif;
+}
+
+button {
+  @apply bg-blue-500 text-white text-sm px-3 py-0.5 m-1 rounded-md leading-5;
+  font-family: regular;
+}
+
+button:hover {
+  @apply opacity-90;
+}
+
+.btn-gray {
+  @apply bg-gray-400;
+}
+
+.btn-red {
+  @apply bg-red-400;
+}
+
+.btn-green {
+  @apply bg-green-600;
+}
+
+input,
+select,
+textarea {
+  @apply border-2 border-gray-600 outline-none p-0.5;
+}
+
+h1 {
+  @apply text-4xl;
+}
+
+h2 {
+  @apply text-3xl;
+}
+h3 {
+  @apply text-2xl;
+}
+h4 {
+  @apply text-xl;
+}
+h5 {
+  @apply text-lg;
+}
+
+.no-scroll-bar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scroll-bar::-webkit-scrollbar {
+  display: none;
+}

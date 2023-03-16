@@ -1,0 +1,515 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "FastAPI",
+    "version": "0.1.0"
+  },
+  "servers": [
+    {
+      "url": "/api"
+    }
+  ],
+  "paths": {
+    "/workspace/list": {
+      "get": {
+        "summary": "Get List",
+        "operationId": "get_list_workspace_list_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get List Workspace List Get",
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/components/schemas/Workspace"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspace/update": {
+      "post": {
+        "summary": "Update",
+        "operationId": "update_workspace_update_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Workspace"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/image/list": {
+      "get": {
+        "summary": "Get List",
+        "operationId": "get_list_image_list_get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Workspace",
+              "type": "string"
+            },
+            "name": "workspace",
+            "in": "query"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Start",
+              "type": "integer"
+            },
+            "name": "start",
+            "in": "query"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "End",
+              "type": "integer"
+            },
+            "name": "end",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Order",
+              "enum": [
+                "id"
+              ],
+              "type": "string",
+              "default": "id"
+            },
+            "name": "order",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get List Image List Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Image"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/image/file": {
+      "get": {
+        "summary": "Get File",
+        "operationId": "get_file_image_file_get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Image Id",
+              "type": "string"
+            },
+            "name": "image_id",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Image Type",
+              "enum": [
+                "original",
+                "thumbnail"
+              ],
+              "type": "string",
+              "default": "original"
+            },
+            "name": "image_type",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "FileInfo": {
+        "title": "FileInfo",
+        "type": "object",
+        "properties": {
+          "file_size": {
+            "title": "File Size",
+            "type": "integer",
+            "default": -1
+          },
+          "md5_hash": {
+            "title": "Md5 Hash",
+            "type": "string",
+            "default": ""
+          }
+        },
+        "description": "ファイル情報"
+      },
+      "HTTPValidationError": {
+        "title": "HTTPValidationError",
+        "type": "object",
+        "properties": {
+          "detail": {
+            "title": "Detail",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      },
+      "Image": {
+        "title": "Image",
+        "required": [
+          "ignore",
+          "source_type",
+          "path"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "ignore": {
+            "title": "Ignore",
+            "type": "boolean"
+          },
+          "source_type": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "path": {
+            "title": "Path",
+            "type": "string"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/Metadata"
+          },
+          "relative_image_ids": {
+            "title": "Relative Image Ids",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": []
+          }
+        },
+        "description": "画像"
+      },
+      "MLDanbooru": {
+        "title": "MLDanbooru",
+        "type": "object",
+        "properties": {
+          "tags": {
+            "title": "Tags",
+            "type": "object",
+            "additionalProperties": {
+              "type": "number"
+            },
+            "default": {}
+          },
+          "feature": {
+            "title": "Feature",
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "default": []
+          }
+        },
+        "description": "機械学習(danbooru-pretrained)で得られた情報"
+      },
+      "Metadata": {
+        "title": "Metadata",
+        "type": "object",
+        "properties": {
+          "title": {
+            "title": "Title",
+            "type": "string",
+            "default": ""
+          },
+          "author": {
+            "title": "Author",
+            "type": "string",
+            "default": ""
+          },
+          "tags": {
+            "title": "Tags",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": []
+          },
+          "description": {
+            "title": "Description",
+            "type": "string",
+            "default": ""
+          },
+          "misc_info": {
+            "title": "Misc Info",
+            "type": "string",
+            "default": ""
+          },
+          "image_size": {
+            "title": "Image Size",
+            "maxItems": 2,
+            "minItems": 2,
+            "type": "array",
+            "items": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "default": [
+              -1,
+              -1
+            ]
+          },
+          "last_updated": {
+            "title": "Last Updated",
+            "type": "string",
+            "format": "date-time"
+          },
+          "file_info": {
+            "$ref": "#/components/schemas/FileInfo"
+          },
+          "web_info": {
+            "$ref": "#/components/schemas/WebInfo"
+          },
+          "ml": {
+            "$ref": "#/components/schemas/MLDanbooru"
+          }
+        },
+        "description": "画像のメタデータ"
+      },
+      "RemoteSource": {
+        "title": "RemoteSource",
+        "required": [
+          "name",
+          "site",
+          "query"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "site": {
+            "$ref": "#/components/schemas/SourceSite"
+          },
+          "query": {
+            "title": "Query",
+            "type": "string"
+          }
+        },
+        "description": "新しい画像をWebページから取得する方法"
+      },
+      "ResultResponse": {
+        "title": "ResultResponse",
+        "required": [
+          "result"
+        ],
+        "type": "object",
+        "properties": {
+          "result": {
+            "title": "Result",
+            "type": "boolean"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string",
+            "default": ""
+          }
+        }
+      },
+      "SourceSite": {
+        "title": "SourceSite",
+        "enum": [
+          "pixiv",
+          "danbooru",
+          "yandere"
+        ],
+        "type": "string",
+        "description": "画像のソースのWebサイト"
+      },
+      "SourceType": {
+        "title": "SourceType",
+        "enum": [
+          "file",
+          "url"
+        ],
+        "type": "string",
+        "description": "画像のソース"
+      },
+      "ValidationError": {
+        "title": "ValidationError",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "loc": {
+            "title": "Location",
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            }
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        }
+      },
+      "WebInfo": {
+        "title": "WebInfo",
+        "required": [
+          "source_site",
+          "id",
+          "url",
+          "url_parent"
+        ],
+        "type": "object",
+        "properties": {
+          "source_site": {
+            "$ref": "#/components/schemas/SourceSite"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "url": {
+            "title": "Url",
+            "type": "string"
+          },
+          "url_parent": {
+            "title": "Url Parent",
+            "type": "string"
+          }
+        },
+        "description": "取得元Webページの情報"
+      },
+      "Workspace": {
+        "title": "Workspace",
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "scan_directories": {
+            "title": "Scan Directories",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": []
+          },
+          "scan_remotes": {
+            "title": "Scan Remotes",
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/RemoteSource"
+            },
+            "default": {}
+          },
+          "ignore_patterns": {
+            "title": "Ignore Patterns",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": []
+          }
+        },
+        "description": "ワークスペース"
+      }
+    }
+  }
+}

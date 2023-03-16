@@ -1,0 +1,12 @@
+[[image_sources]]
+name = "sample_images"
+type = "directory"
+path = ['C:\Users\yuya\Documents\devel\peano\samples\images']
+
+[[image_sources]]
+name = "dgcv"
+type = "directory"
+path = ['\\NAS-HOME\nfs_root\illust']
+ignore_patterns = [
+    '.*\\\..*',
+]
