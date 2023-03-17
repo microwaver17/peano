@@ -2,38 +2,54 @@ import gzip
 import io
 import pickle
 from typing import Any
-
+from zstd import ZSTD_uncompress, ZSTD_compress
 from torch import Tensor
 import torch
 
 
-def object_to_pickle_gz(obj: Any) -> bytes:
-    bio_b_gz = io.BytesIO()
-    with gzip.open(bio_b_gz, "wb", compresslevel=1) as f:
-        pickle.dump(obj, f)
+class ObjectSerializer:
+    def __init__(self, value: Any):
+        self.value = value
 
-    return bio_b_gz.getvalue()
-
-
-def pickle_gz_to_object(pkl: bytes) -> Any:
-    bio_b = io.BytesIO(pkl)
-    with gzip.open(bio_b, "rb") as f:
-        obj = pickle.load(f)
-
-    return obj
+    def to_bytes(self) -> "SerializedObject":
+        return SerializedObject(pickle.dumps(self.value))
 
 
-def tensor_to_gz(t: Tensor) -> bytes:
-    bio_t_gz = io.BytesIO()
-    with gzip.open(bio_t_gz, "wb", compresslevel=1) as f:
-        torch.save(t, f)
+class TensorSerializer:
+    def __init__(self, value: Tensor):
+        self.value = value
 
-    return bio_t_gz.getvalue()
+    def to_bytes(self) -> "SerializedTensor":
+        bio_t = io.BytesIO()
+        torch.save(self.value, bio_t)
+
+        return SerializedTensor(bio_t.getvalue())
 
 
-def gz_to_tensor(gz: bytes) -> Tensor:
-    bio_gz = io.BytesIO(gz)
-    with gzip.open(bio_gz, "rb") as f:
-        t = torch.load(f)
+class SerializedObject:
+    def __init__(self, value: bytes):
+        self.value = value
 
-    return t
+    def to_object(self) -> Any:
+        return pickle.loads(self.value)
+
+    def to_compressed(self) -> "CompressedObject":
+        return CompressedObject(ZSTD_compress(self.value, -4))
+
+
+class SerializedTensor:
+    def __init__(self, value: bytes):
+        self.value = value
+
+    def to_tensor(self) -> Tensor:
+        bio_b = io.BytesIO(self.value)
+
+        return torch.load(bio_b)
+
+
+class CompressedObject:
+    def __init__(self, value: bytes):
+        self.value = value
+
+    def to_uncompressed(self) -> SerializedObject:
+        return SerializedObject(ZSTD_uncompress(self.value))

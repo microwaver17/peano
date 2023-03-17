@@ -1,8 +1,10 @@
 import sys
 import os
-from typing import Any
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+from typing import Any
+from peano.common.settings import Setting
+
 
 from peano.db.connect import get_db
 
@@ -37,5 +39,23 @@ def ml_tags_dict_to_list_20230315_00():
         print(f'Change: {img_db["id"]}')
 
 
+def make_setting_collection_20230317_00():
+    """設定情報を保存するコレクションを作成"""
+
+    db = get_db()
+
+    # settingがなければ終了
+    if db.setting.find_one() is not None:
+        return
+
+    print(make_setting_collection_20230317_00.__doc__)
+    if input("実行しますか？(y/n)): ") != "y":
+        return
+
+    setting = Setting()
+    db.setting.insert_one(setting.dict())
+
+
 if __name__ == "__main__":
     ml_tags_dict_to_list_20230315_00()
+    make_setting_collection_20230317_00()

@@ -7,7 +7,7 @@ from PIL import Image
 
 from peano.common.definitions import THUMBNAIL_SIZE
 from peano.common.pathfinder import app_dir
-from peano.db.models import SourceType
+from peano.db.models import SourceType, Image as MImage
 
 
 class AbstractImageLoader(ABC):
@@ -57,7 +57,7 @@ class ImageFileLoader(AbstractImageLoader):
         return img_b
 
 
-def get_loader(img: Image) -> AbstractImageLoader:
+def get_loader(img: MImage) -> AbstractImageLoader:
     if img.source_type == SourceType.file:
         return ImageFileLoader(img.path)
 

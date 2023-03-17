@@ -29,6 +29,9 @@ class FeatureState:
         self.load_from_file()
 
     def load_from_file(self):
+        if self.ws_name is None:
+            return
+        
         base_dir = data_dir() / self.ws_name
 
         if (

@@ -28,6 +28,10 @@ class _DB:
         return self._db["workspaces"]
 
     @property
+    def setting(self):
+        return self._db["setting"]
+
+    @property
     def userdata(self):
         return self._db["userdata"]
 

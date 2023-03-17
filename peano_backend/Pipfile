@@ -11,6 +11,7 @@ python-ulid = "*"
 fastapi = "*"
 uvicorn = {extras = ["standard"], version = "*"}
 pymongo = "*"
+zstd = "*"
 
 [requires]
 python_version = "3.9"

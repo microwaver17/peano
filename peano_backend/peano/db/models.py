@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Optional, NewType
+from typing import Optional, NewType, Type
 
 from pydantic import BaseModel, conlist
 from enum import Enum

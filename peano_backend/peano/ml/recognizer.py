@@ -9,7 +9,7 @@ from threading import Lock
 from typing import Literal
 
 from torch import Tensor
-from torch.fx import GraphModule
+from torch.fx.graph_module import GraphModule
 from torchvision.models.feature_extraction import create_feature_extractor
 
 from peano.common.pathfinder import data_dir, resources_dir
@@ -137,7 +137,7 @@ class _AnimeRecognizer:
     ) -> tuple[dict[str, float], list[float]]:
         if torch.cuda.is_available():
             batch = batch.to("cuda")
-            self.model.to("cuda")
+            self._model.to("cuda")
         with torch.no_grad():
             output = self._extractor(batch)
             output_tags = output[self.NODE_NAME_TAGS]

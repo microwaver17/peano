@@ -2,7 +2,7 @@ import json
 import logging
 import pickle
 import re
-from typing import Literal
+from typing import Literal, Optional
 
 from fastapi import APIRouter, Response, Query, HTTPException
 
@@ -92,7 +92,7 @@ def get(
     ws_name: str,
     start: int,
     end: int,
-    keyword: str = None,
+    keyword: Optional[str] = None,
     order_by: Literal["id", "date", "random"] = "id",
     order: Literal["asc", "desc"] = "asc",
 ) -> list[ImageDigest]:
@@ -134,7 +134,7 @@ def get_similar_images(
     workspace: str,
     start: int,
     end: int,
-    keyword: str = None,
+    keyword: Optional[str] = None,
     query_ids: list[UID] = Query(),
     order_by: Literal["similarity"] = "similarity",
     order: Literal["asc", "desc"] = "desc",

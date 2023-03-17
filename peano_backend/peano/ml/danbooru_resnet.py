@@ -101,11 +101,17 @@ def resnet18(pretrained=True, progress=True, top_n=100, **kwargs):
     model = _resnet(models.resnet18, top_n, **kwargs)
     if pretrained:
         if top_n == 100:
-            state = torch.hub.load_state_dict_from_url(
-                "https://github.com/RF5/danbooru-pretrained/releases/download/v0.1/resnet18-3f77756f.pth",
-                progress=progress,
-                map_location=torch.device("cpu"),
-            )
+            if torch.cuda.is_available():
+                state = torch.hub.load_state_dict_from_url(
+                    "https://github.com/RF5/danbooru-pretrained/releases/download/v0.1/resnet18-3f77756f.pth",
+                    progress=progress,
+                )
+            else:
+                state = torch.hub.load_state_dict_from_url(
+                    "https://github.com/RF5/danbooru-pretrained/releases/download/v0.1/resnet18-3f77756f.pth",
+                    progress=progress,
+                    map_location=torch.device("cpu"),
+                )
             # state = torch.load('weights/resnet18.pth')
             model.load_state_dict(state)
         else:
@@ -130,11 +136,17 @@ def resnet34(pretrained=True, progress=True, top_n=500, **kwargs):
     model = _resnet(models.resnet34, top_n, **kwargs)
     if pretrained:
         if top_n == 500:
-            state = torch.hub.load_state_dict_from_url(
-                "https://github.com/RF5/danbooru-pretrained/releases/download/v0.1/resnet34-88a5e79d.pth",
-                progress=progress,
-                map_location=torch.device("cpu"),
-            )
+            if torch.cuda.is_available():
+                state = torch.hub.load_state_dict_from_url(
+                    "https://github.com/RF5/danbooru-pretrained/releases/download/v0.1/resnet34-88a5e79d.pth",
+                    progress=progress,
+                )
+            else:
+                state = torch.hub.load_state_dict_from_url(
+                    "https://github.com/RF5/danbooru-pretrained/releases/download/v0.1/resnet34-88a5e79d.pth",
+                    progress=progress,
+                    map_location=torch.device("cpu"),
+                )
             # state = torch.load('weights/resnet34.pth')
             model.load_state_dict(state)
         else:
@@ -158,11 +170,17 @@ def resnet50(pretrained=True, progress=True, top_n=6000, **kwargs):
     model = _resnet(models.resnet50, top_n, **kwargs)
     if pretrained:
         if top_n == 6000:
-            state = torch.hub.load_state_dict_from_url(
-                "https://github.com/RF5/danbooru-pretrained/releases/download/v0.1/resnet50-13306192.pth",
-                progress=progress,
-                map_location=torch.device("cpu"),
-            )
+            if torch.cuda.is_available():
+                state = torch.hub.load_state_dict_from_url(
+                    "https://github.com/RF5/danbooru-pretrained/releases/download/v0.1/resnet50-13306192.pth",
+                    progress=progress,
+                )
+            else:
+                state = torch.hub.load_state_dict_from_url(
+                    "https://github.com/RF5/danbooru-pretrained/releases/download/v0.1/resnet50-13306192.pth",
+                    progress=progress,
+                    map_location=torch.device("cpu"),
+                )
             # state = torch.load('weights/resnet50.pth')
             model.load_state_dict(state)
         else:
